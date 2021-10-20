@@ -211,5 +211,37 @@ files:
     Nastassja Trustram 3.77 Mathematics Engineering Physics"""
   learner_created: false
 feedback_link: https://hyperskill.org/projects/163/stages/847/implement#comment
-status: Unchecked
+status: Failed
+feedback:
+  message: |-
+    Wrong answer in test #1
+
+    Line 1 for the Biotech department is supposed to contain the following applicant:
+    "Randon Bradhust 3.68"
+    However, this line contains the following data:
+    "Kennedy Barrett 3.9"
+    Make sure the procedure of application is implemented correctly in your program.
+
+    Please find below the output of your program during this failed test.
+    Note that the '>' character indicates the beginning of the input line.
+
+    ---
+
+    > 1
+
+    Biotech
+    Kennedy Barrett 3.9
+
+    Chemistry
+    Stacey Revill 3.92
+
+    Engineering
+    Takyra Sieminski 3.97
+
+    Mathematics
+    Shantale Tompkins 3.9
+
+    Physics
+    Darrah Smyth 3.89
+  time: Wed, 20 Oct 2021 21:46:09 UTC
 record: -1
