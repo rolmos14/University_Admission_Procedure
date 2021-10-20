@@ -1,0 +1,15 @@
+type: code
+files:
+- name: main.py
+  visible: true
+  text: |-
+    nums = [int(num) for num in list(input())]
+
+    # write your code here
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/13673#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: Sun, 17 Oct 2021 12:03:19 UTC
+record: -1

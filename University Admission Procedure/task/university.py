@@ -1,25 +1,23 @@
 class Admission:
 
-    def __init__(self):
-        self.scores = []
+    def __init__(self, applicants, accepted):
+        self.applicants = []
+        self.total_applicants = applicants
+        self.total_accepted = accepted
 
-    def submit_scores(self):
-        self.scores = [int(input()) for _ in range(3)]
+    def submit_applicants(self):
+        for _ in range(self.total_applicants):
+            first_name, last_name, gpa = input().split()
+            self.applicants.append([first_name, last_name, float(gpa)])
 
-    def mean_score(self):
-        return sum(self.scores) / len(self.scores)
-
-    def accepted(self):
-        return self.mean_score() >= 60.0
-
-    def print_result(self):
-        print(self.mean_score())
-        if self.accepted():
-            print("Congratulations, you are accepted!")
-        else:
-            print("We regret to inform you that we will not be able to offer you admission.")
+    def accepted_applicants(self):
+        print("Successful applicants:")
+        sorted_applicants = sorted(self.applicants, key=lambda x: (-x[2], x[0], x[1]))
+        for applicant in sorted_applicants[:self.total_accepted]:
+            first_name, last_name = applicant[0], applicant[1]
+            print(first_name, last_name)
 
 
-candidate = Admission()
-candidate.submit_scores()
-candidate.print_result()
+admission = Admission(int(input()), int(input()))
+admission.submit_applicants()
+admission.accepted_applicants()
