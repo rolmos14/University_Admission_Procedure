@@ -24,7 +24,7 @@ class Admission:
                 dep_list = self.departments_lists[n]
                 if len(dep_list) == self.max_accepted:
                     continue  # department full
-                # Get all the applicants' (full_name + GPA) whose priority_n equals the current department
+                # Get all the applicants' full_name + GPA whose priority_n equals the current department
                 dep_applicants = [applicant[:2]
                                   for applicant in self.applicants if applicant[-1][priority_n] == dep]
                 still_available = self.max_accepted - len(dep_list)
@@ -33,16 +33,18 @@ class Admission:
                 # Assign applicants to the department list
                 self.departments_lists[n].extend(dep_applicants)
                 # Remove accepted applicants from main list
-                self.applicants = [applicant for applicant in self.applicants if applicant[0] not in dep_applicants]
+                accepted = [applicant[0] for applicant in dep_applicants]
+                self.applicants = [applicant for applicant in self.applicants if applicant[0] not in accepted]
 
-        # Print departments and their accepted students
+        # Print departments and their accepted students, sorting them again first to sort by GPA & full_name
         for n, dep in enumerate(self.departments):
             print('\n' + dep)
+            self.departments_lists[n] = sorted(self.departments_lists[n], key=lambda x: (-x[1], x[0]))
             for student in self.departments_lists[n]:
                 # 'full_name' + GPA
                 print(student[0], student[1])
 
 
 admission = Admission(int(input()), ['Mathematics', 'Physics', 'Biotech', 'Chemistry', 'Engineering'])
-admission.submit_applicants("applicant_list.txt")
+admission.submit_applicants("applicants.txt")
 admission.accepted_applicants()
