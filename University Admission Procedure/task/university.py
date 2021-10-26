@@ -23,6 +23,10 @@ class Admission:
                                     [dep_1, dep_2, dep_3]])
 
     def accepted_applicants(self):
+
+        def mean(numbers):
+            return sum(numbers) / len(numbers)
+
         # Loop through all the priorities
         for priority_n in range(3):
             # Loop through all the departments
@@ -30,34 +34,35 @@ class Admission:
                 dep_list = self.departments_lists[n]
                 if len(dep_list) == self.max_accepted:
                     continue  # department full
-                # Get all the applicants' full_name + scores whose priority_n equals the current department
-                dep_applicants = [applicant[:2]
+                # Get all the applicants' full_name + scores / mean score whose priority_n equals the current department
+                dep_applicants = [[applicant[0]] +
+                                  [mean([applicant[1][dep_exam] for dep_exam in self.departments_exams[dep]])]
                                   for applicant in self.applicants if applicant[-1][priority_n] == dep]
                 still_available = self.max_accepted - len(dep_list)
-                # Sort them by corresponding exam score & full_name and get as many as possible
+                # Sort them by corresponding exam score / exams mean & full_name and get as many as possible
                 dep_exam_pos = self.departments_exams[dep]
-                dep_applicants = sorted(dep_applicants, key=lambda x: (-x[1][dep_exam_pos], x[0]))[:still_available]
+                dep_applicants = sorted(dep_applicants, key=lambda x: (-x[1], x[0]))[:still_available]
                 # Assign applicants to the department list
                 self.departments_lists[n].extend(dep_applicants)
                 # Remove accepted applicants from main list
                 accepted = [applicant[0] for applicant in dep_applicants]
                 self.applicants = [applicant for applicant in self.applicants if applicant[0] not in accepted]
 
-        # Print departments and their accepted students, sorting them again first to sort by exam score & full_name
+        # Write accepted students to files, one per department
         for n, dep in enumerate(self.departments):
-            print('\n' + dep)
-            dep_exam_pos = self.departments_exams[dep]
-            self.departments_lists[n] = sorted(self.departments_lists[n], key=lambda x: (-x[1][dep_exam_pos], x[0]))
-            for student in self.departments_lists[n]:
-                # 'full_name' + department's exam score
-                print(student[0], student[1][dep_exam_pos])
+            # Sort them again first to sort by exam score / mean score & full_name
+            self.departments_lists[n] = sorted(self.departments_lists[n], key=lambda x: (-x[1], x[0]))
+            with open(dep.lower() + ".txt", "w") as file:
+                for student in self.departments_lists[n]:
+                    # 'full_name' + department's exam / mean score
+                    file.write(student[0] + " " + str(student[1]) + "\n")
 
 
-dep_exams = {'Mathematics': 2,
-             'Physics': 0,
-             'Biotech': 1,
-             'Chemistry': 1,
-             'Engineering': 3}
+dep_exams = {'Mathematics': [2],
+             'Physics': [0, 2],
+             'Biotech': [0, 1],
+             'Chemistry': [1],
+             'Engineering': [2, 3]}
 admission = Admission(int(input()), dep_exams)
 admission.submit_applicants("applicants.txt")
 admission.accepted_applicants()
